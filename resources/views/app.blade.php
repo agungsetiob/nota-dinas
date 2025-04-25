@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title inertia>{{ config('app.name', 'Laravel') }}</title>
+        <link rel="icon" href="{{ asset('img/logo.png') }}" type="image/png" />
+        <link rel="shortcut icon" href="{{ asset('img/logo.png') }}" type="image/png" />
+
+        <!-- Fonts -->
+        <link rel="preconnect" href="https://fonts.bunny.net">
+        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+
+        <!-- Scripts -->
+        @routes
+        @vite(['resources/js/app.js', "resources/js/Pages/{$page['component']}.vue"])
+        @inertiaHead
+    </head>
+    <body class="font-sans antialiased">
+        @inertia
+        <footer class="bg-white text-gray-700 py-6 text-center w-full">
+            <div class="max-w-7xl mx-auto px-4">
+                <p class="text-sm">&copy; {{ date('Y') }} {{ config('app.name') }} Kabupaten Tanah Bumbu</p>
+            </div>
+        </footer>
+    </body>
+</html>
