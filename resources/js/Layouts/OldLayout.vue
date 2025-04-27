@@ -152,30 +152,31 @@ document.addEventListener('inertia:finish', () => {
           </div>
         </div>
       </div>
-      <!-- Bottom Navigation -->
-      <header class="border bg-white shadow fixed bottom-0 left-0 right-0 z-10 h-12 sm:sticky sm:top-16 sm:h-auto">
-        <div class="max-w-7xl mx-auto py-2 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center">
-          <nav class="flex overflow-x-auto whitespace-nowrap scrollbar-hide w-full gap-6 sm:justify-center">
-            <template v-for="menu in menus" :key="menu.route">
-              <Link
-                :href="route(menu.route)"
-                class="flex flex-col items-center text-sm sm:text-base"
-                :class="{ 'border-b-2 border-green-500': route().current(menu.route) }"
-              >
-                <font-awesome-icon
-                  :icon="menu.icon"
-                  :class="[
-                    'text-lg sm:text-xl',
-                    route().current(menu.route) ? 'text-green-500' : 'text-gray-800'
-                  ]"
-                />
-                <span class="mt-2 font-medium text-gray-800 hover:text-blue-700">{{ menu.label }}</span>
-              </Link>
-            </template>
-          </nav>
-        </div>
-      </header>
     </nav>
+
+    <!-- Bottom Navigation -->
+    <header class="border bg-white shadow fixed bottom-0 left-0 right-0 z-10 h-12 sm:sticky sm:top-16 sm:h-auto">
+      <div class="max-w-7xl mx-auto py-2 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center">
+        <nav class="flex overflow-x-auto whitespace-nowrap scrollbar-hide w-full gap-6 sm:justify-center">
+          <template v-for="menu in menus" :key="menu.route">
+            <Link
+              :href="route(menu.route)"
+              class="flex flex-col items-center text-sm sm:text-base"
+              :class="{ 'border-b-2 border-green-500': route().current(menu.route) }"
+            >
+              <font-awesome-icon
+                :icon="menu.icon"
+                :class="[
+                  'text-lg sm:text-xl',
+                  route().current(menu.route) ? 'text-green-500' : 'text-gray-800'
+                ]"
+              />
+              <span class="mt-2 font-medium text-gray-800 hover:text-blue-700">{{ menu.label }}</span>
+            </Link>
+          </template>
+        </nav>
+      </div>
+    </header>
 
     <div class="flex-1 pt-16 pb-12 sm:pt-16 sm:pb-0 relative">
       <div 

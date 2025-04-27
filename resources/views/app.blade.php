@@ -5,7 +5,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
-        <link rel="icon" href="{{ asset('img/logo.png') }}" type="image/png" />
         <link rel="shortcut icon" href="{{ asset('img/logo.png') }}" type="image/png" />
 
         <!-- Fonts -->
@@ -19,7 +18,10 @@
     </head>
     <body class="font-sans antialiased">
         @inertia
-        <footer class="bg-white text-gray-700 py-6 text-center w-full">
+        <!-- <div class="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center">
+            <i class="fas fa-spinner fa-spin text-6xl text-green-400"></i>
+        </div> -->
+        <footer class="bg-pattern text-gray-700 py-4 text-center w-full">
             <div class="max-w-7xl mx-auto px-4">
                 <p class="text-sm">&copy; {{ date('Y') }} {{ config('app.name') }} Kabupaten Tanah Bumbu</p>
             </div>

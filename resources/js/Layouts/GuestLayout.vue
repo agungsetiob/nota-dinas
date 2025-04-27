@@ -26,8 +26,8 @@ document.addEventListener('inertia:finish', () => {
         <div
             class="mt-6 w-full overflow-hidden bg-white px-6 py-4 shadow-md sm:max-w-md sm:rounded-lg"
         >
-            <div v-if="isLoading" class="fixed inset-0 bg-white bg-opacity-70 z-50 flex items-center justify-center">
-                <font-awesome-icon icon="spinner" spin class="text-6xl text-green-600" />
+            <div v-if="isLoading" class="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center">
+                <font-awesome-icon icon="spinner" spin class="text-6xl text-green-400" />
             </div>
             <slot />
         </div>

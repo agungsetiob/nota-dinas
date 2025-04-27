@@ -17,9 +17,8 @@ const user = page.props.auth.user;
     <Head title="Dashboard Asisten" />
 
     <AuthenticatedLayout>
-        <template #header></template>
 
-        <div class="py-6 mx-2 sm:px-2">
+        <div class="pb-6 pt-6 sm:pt-20 mx-2 sm:px-2">
             <div class="max-w-8xl mx-auto sm:px-6 lg:px-6">
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-2">

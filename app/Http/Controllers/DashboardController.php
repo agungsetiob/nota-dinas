@@ -17,7 +17,7 @@ class DashboardController extends Controller
         $totalSkpds = Skpd::count();
         $notaDinas = NotaDinas::count();
         $notaSelesai = NotaDinas::where('tahap_saat_ini', 'selesai')->count();
-
+        sleep(0.5);
         return match ($role) {
             'admin' => Inertia::render('Dashboard/Admin', [
                 'totalUsers' => $totalUsers,
@@ -25,10 +25,30 @@ class DashboardController extends Controller
                 'notaDinas' => $notaDinas,
                 'notaSelesai' => $notaSelesai,
             ]),
-            'skpd' => Inertia::render('Dashboard/Skpd'),
-            'asisten' => Inertia::render('Dashboard/Asisten'),
-            'sekda' => Inertia::render('Dashboard/Sekda'),
-            'bupati' => Inertia::render('Dashboard/Bupati'),
+            'skpd' => Inertia::render('Dashboard/Skpd', [
+                'totalUsers' => $totalUsers,
+                'totalSkpds' => $totalSkpds,
+                'notaDinas' => $notaDinas,
+                'notaSelesai' => $notaSelesai,
+            ]),
+            'asisten' => Inertia::render('Dashboard/Asisten', [
+                'totalUsers' => $totalUsers,
+                'totalSkpds' => $totalSkpds,
+                'notaDinas' => $notaDinas,
+                'notaSelesai' => $notaSelesai,
+            ]),
+            'sekda' => Inertia::render('Dashboard/Sekda', [
+                'totalUsers' => $totalUsers,
+                'totalSkpds' => $totalSkpds,
+                'notaDinas' => $notaDinas,
+                'notaSelesai' => $notaSelesai,
+            ]),
+            'bupati' => Inertia::render('Dashboard/Bupati', [
+                'totalUsers' => $totalUsers,
+                'totalSkpds' => $totalSkpds,
+                'notaDinas' => $notaDinas,
+                'notaSelesai' => $notaSelesai,
+            ]),
             default => abort(403),
         };
     }

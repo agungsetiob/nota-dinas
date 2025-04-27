@@ -22,7 +22,7 @@ class ProfileController extends Controller
         return Inertia::render('Profile/Edit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
-            'skpds' => Skpd::where('status', true)->select('id', 'nama_skpd')->get()
+            //'skpds' => Skpd::where('status', true)->select('id', 'nama_skpd')->get()
         ]);
     }
 
