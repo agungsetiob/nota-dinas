@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue';
-import { usePage, Link } from '@inertiajs/vue3';
+import { usePage, Link} from '@inertiajs/vue3';
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
@@ -54,6 +54,9 @@ document.addEventListener('inertia:start', () => {
 document.addEventListener('inertia:finish', () => {
   isLoading.value = false;
 });
+
+const currentYear = computed(() => new Date().getFullYear());
+const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 </script>
 
 <template>
@@ -153,7 +156,7 @@ document.addEventListener('inertia:finish', () => {
         </div>
       </div>
       <!-- Bottom Navigation -->
-      <header class="border bg-white shadow fixed bottom-0 left-0 right-0 z-10 h-12 sm:sticky sm:top-16 sm:h-auto">
+      <header class="border bg-white shadow fixed bottom-0 left-0 right-0 z-20 h-12 sm:sticky sm:top-16 sm:h-auto">
         <div class="max-w-7xl mx-auto py-2 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center">
           <nav class="flex overflow-x-auto whitespace-nowrap scrollbar-hide w-full gap-6 sm:justify-center">
             <template v-for="menu in menus" :key="menu.route">
@@ -178,28 +181,28 @@ document.addEventListener('inertia:finish', () => {
     </nav>
 
     <div class="flex-1 pt-16 pb-12 sm:pt-16 sm:pb-0 relative">
-      <div 
-        v-if="isLoading" 
-        class="fixed inset-0 bg-black bg-opacity-70 z-10 flex items-center justify-center"
-        :style="{
+      <div v-if="isLoading" class="fixed inset-0 flex items-center justify-center bg-white z-10 bg-opacity-70"
+      :style="{
           top: '4rem',
           bottom: '0rem',
           '@media (min-width: 640px)': { 
             top: '8rem',
             bottom: '0'
-          }
-        }"
-      >
-        <font-awesome-icon 
-          icon="spinner" 
-          spin 
-          class="text-6xl text-green-400" 
-        />
+          }}">
+        <svg class="animate-spin h-20 w-20 text-green-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
       </div>
       
       <main class="h-full overflow-auto">
         <slot />
       </main>
     </div>
+    <footer class="text-gray-800 py-4 text-center w-full">
+      <div class="max-w-7xl mx-auto px-4">
+        <p class="text-sm">&copy; {{ currentYear }} {{ appName }} Kabupaten Tanah Bumbu</p>
+      </div>
+    </footer>
   </div>
 </template>

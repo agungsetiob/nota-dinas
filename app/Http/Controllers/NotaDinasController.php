@@ -54,7 +54,7 @@ class NotaDinasController extends Controller
         $validated = $request->validate([
             'nomor_nota' => 'required|string|max:255',
             'perihal' => 'required|string|max:255',
-            'anggaran' => 'required|numeric',
+            'anggaran' => 'nullable|numeric',
             'tanggal_pengajuan' => 'required|date',
             //'lampiran.*' => 'nullable|file|mimes:pdf|max:2048',
         ]);
@@ -84,7 +84,7 @@ class NotaDinasController extends Controller
         $validated = $request->validate([
             'nomor_nota' => 'required|string|max:255',
             'perihal' => 'required|string|max:255',
-            'anggaran' => 'required|numeric',
+            'anggaran' => 'nullable|numeric',
             'tanggal_pengajuan' => 'required|date',
             //'lampiran.*' => 'nullable|file|mimes:pdf|max:2048',
         ]);
@@ -156,7 +156,7 @@ class NotaDinasController extends Controller
     {
         $pengiriman = NotaPengiriman::findOrFail($id);
         $lampirans = $pengiriman->lampirans;
-        // Optionally sleep(2) for simulation
+        //sleep(2);
         return response()->json(
             $lampirans->map(function ($file) {
                 return [

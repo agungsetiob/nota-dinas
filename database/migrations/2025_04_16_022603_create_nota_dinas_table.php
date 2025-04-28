@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('skpd_id')->constrained('skpds');
             $table->string('nomor_nota');
             $table->string('perihal');
-            $table->string('anggaran');
+            $table->string('anggaran')->nullable();
             $table->date('tanggal_pengajuan');
             $table->enum('status', ['draft', 'proses', 'disetujui', 'ditolak', 'dikembalikan'])->default('draft');
             $table->enum('tahap_saat_ini', ['skpd', 'asisten', 'sekda', 'bupati', 'selesai'])->default('skpd');

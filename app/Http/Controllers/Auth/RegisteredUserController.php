@@ -22,7 +22,7 @@ class RegisteredUserController extends Controller
     public function index(): Response
     {
         $users = User::with('skpd')->paginate(10);
-        sleep(1);
+        //sleep(1);
         return Inertia::render('Users/Index', [
             'users' => $users,
         ]);

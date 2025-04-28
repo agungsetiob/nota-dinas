@@ -17,7 +17,7 @@ class DashboardController extends Controller
         $totalSkpds = Skpd::count();
         $notaDinas = NotaDinas::count();
         $notaSelesai = NotaDinas::where('tahap_saat_ini', 'selesai')->count();
-        sleep(0.5);
+        //sleep(1);
         return match ($role) {
             'admin' => Inertia::render('Dashboard/Admin', [
                 'totalUsers' => $totalUsers,

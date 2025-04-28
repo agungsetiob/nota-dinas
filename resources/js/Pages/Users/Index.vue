@@ -28,7 +28,7 @@ function toggleStatus(userId, currentStatus) {
     <Head title="Users" />
 
     <AuthenticatedLayout>
-        <div class="pb-6 pt-6 sm:pt-20 mx-2 sm:px-2">
+        <div v-show="!isLoading" class="pt-6 sm:pt-24 mx-2 sm:px-2">
             <div class="max-w-8xl mx-auto sm:px-6 lg:px-6">
                 <div class="bg-white shadow-sm sm:rounded-lg p-6">
                     <div class="flex justify-between items-center mb-4">

@@ -7,6 +7,7 @@ import Pagination from '@/Components/Pagination.vue';
 import NotaModal from '@/Pages/NotaDinas/Partials/NotaModal.vue';
 import SendNotaModal from '@/Pages/NotaDinas/Partials/SendNotaModal.vue';
 import LampiranModal from '@/Pages/NotaDinas/Partials/LampiranModal.vue';
+import DeleteModal from '@/Pages/NotaDinas/Partials/DeleteModal.vue';
 import ApprovalModal from '@/Pages/NotaDinas/Partials/ApprovalModal.vue';
 import ReturnNotaModal from '@/Pages/NotaDinas/Partials/ReturnNotaModal.vue';
 
@@ -27,6 +28,7 @@ const isSendModalOpen = ref(false);
 const isLampiranModalOpen = ref(false);
 const isApprovalModalOpen = ref(false);
 const isReturnModalOpen = ref(false);
+const showDeleteModal = ref(false);
 
 function formatDate(dateStr) {
   const date = new Date(dateStr);
@@ -108,10 +110,13 @@ function closeReturnModal() {
   isReturnModalOpen.value = false;
 }
 
-function deleteNota(nota) {
-  if (confirm('Yakin ingin menghapus?')) {
-    Inertia.delete(route('nota-dinas.destroy', nota.id));
-  }
+const openDeleteModal = (nota) => {
+  selectedNota.value = nota;
+  showDeleteModal.value = true;
+}
+const closeDeleteModal = () => {
+  showDeleteModal.value = false;
+  selectedNota.value = null;
 }
 </script>
 
@@ -119,7 +124,7 @@ function deleteNota(nota) {
 
   <Head title="Daftar Nota Dinas" />
   <AuthenticatedLayout>
-    <div class="pb-6 pt-6 sm:pt-24 mx-2 sm:px-2">
+    <div class="pt-6 sm:pt-24 mx-2 sm:px-2">
       <div class="max-w-8xl mx-auto sm:px-6 lg:px-6">
         <div class="bg-white shadow-sm sm:rounded-lg p-6">
           <div class="flex justify-between items-center mb-4">
@@ -181,7 +186,7 @@ function deleteNota(nota) {
                         class="px-2 py-1 text-xs sm:text-sm font-semibold rounded border transition border-blue-500 text-blue-400 hover:bg-blue-100">
                         <font-awesome-icon icon="edit" />
                       </button>
-                      <button @click="deleteNota(nota)"
+                      <button @click="openDeleteModal(nota)"
                         class="px-2 py-1 text-xs sm:text-sm font-semibold rounded border transition border-red-500 text-red-500 hover:bg-red-100">
                         <font-awesome-icon icon="trash" />
                       </button>
@@ -223,7 +228,7 @@ function deleteNota(nota) {
                   </td>
                 </tr>
                 <tr v-if="notas.data.length === 0">
-                  <td colspan="6" class="px-3 py-2 text-center">Belum ada nota dinas</td>
+                  <td colspan="6" class="px-3 py-2 text-center text-red-500">Belum ada nota dinas</td>
                 </tr>
               </tbody>
             </table>
@@ -243,5 +248,11 @@ function deleteNota(nota) {
       @close="closeApprovalModal" />
     <ReturnNotaModal v-if="isReturnModalOpen" :isOpen="isReturnModalOpen" :notaId="selectedNota?.id"
       @close="closeReturnModal" />
+      <DeleteModal 
+      v-if="showDeleteModal"
+      :show="showDeleteModal"
+      :nota="selectedNota"
+      @close="closeDeleteModal"
+    />
   </AuthenticatedLayout>
 </template>

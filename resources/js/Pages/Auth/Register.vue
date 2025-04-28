@@ -33,7 +33,7 @@ const submit = () => {
     <AuthenticatedLayout>
         <Head title="Register" />
 
-        <div class="flex justify-center pt-8">
+        <div class="flex justify-center pt-8 sm:pt-24">
             <div class="w-full bg-white p-8 shadow-md rounded-lg max-w-3xl mx-4">
                 <form @submit.prevent="submit">
                     <div class="grid grid-cols-1 gap-6">

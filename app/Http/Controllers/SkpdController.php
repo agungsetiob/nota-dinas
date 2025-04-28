@@ -17,7 +17,7 @@ class SkpdController extends Controller
     {
         $skpds = Skpd::with('asisten')->paginate(10);
         $asistens = User::where('role', 'asisten')->where('status', 1)->get();
-        sleep(0.5);
+        //sleep(1);
         return Inertia::render('Skpds/Index', [
             'skpds' => $skpds,
             'asistens' => $asistens
