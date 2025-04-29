@@ -7,6 +7,7 @@ use App\Http\Controllers\NotaPersetujuanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\SkpdController;
+use App\Http\Controllers\TteController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 

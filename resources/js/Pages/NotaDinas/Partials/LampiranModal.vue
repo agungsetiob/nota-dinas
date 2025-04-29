@@ -1,16 +1,14 @@
 <template>
-  <transition
-    enter-active-class="transition ease-out duration-1200"
-    enter-from-class="opacity-0 -translate-y-full"
-    enter-to-class="opacity-100 translate-y-0"
-    leave-active-class="transition ease-in duration-1200"
-    leave-from-class="opacity-100 translate-y-0"
-    leave-to-class="opacity-0 translate-y-full"
-  >
+  <div>
+    <!-- Lampiran Modal -->
     <div v-if="isOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div class="bg-white rounded-lg shadow-xl w-11/12 max-w-3xl p-6 relative">
-        <h3 class="text-lg font-semibold mb-4">Daftar Lampiran</h3>
-
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-lg font-semibold mb-4">Daftar Lampiran</h3>
+          <button @click="closeModal" class="text-gray-400 hover:text-gray-700">
+              ✖
+          </button>
+        </div>
         <ul class="list-disc pl-5 text-sm text-gray-700">
           <template v-if="loading">
             <li class="text-gray-500">Memuat lampiran...</li>
@@ -20,23 +18,36 @@
           </template>
           <template v-else>
             <li v-if="lampiranList.length === 0" class="text-gray-500">Tidak ada lampiran.</li>
-            <li v-for="(file, index) in lampiranList" :key="index" class="mb-2">
-              <a :href="file.url" target="_blank" class="text-blue-600 hover:underline">
-                {{ file.name }}
-              </a>
+            <li
+              v-for="(file, index) in lampiranList"
+              :key="index"
+              class="mb-2 cursor-pointer text-blue-600 hover:underline"
+              @click="openFilePreview(file)"
+            >
+              {{ file.name }}
               <span class="text-gray-500 text-xs"> ({{ formatDate(file.created_at) }})</span>
             </li>
           </template>
         </ul>
+      </div>
+    </div>
 
-        <div class="mt-4 text-right">
-          <button @click="closeModal" class="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 transition">
-            Tutup
+    <!-- Modal Preview Lampiran -->
+    <div v-if="selectedFile" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+      <div class="bg-white rounded-lg shadow-xl w-full h-full p-6 relative flex flex-col">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-lg font-semibold">{{ selectedFile.name }}</h3>
+          <button @click="closeFilePreview" class="text-gray-400 hover:text-gray-700">
+            ✖
           </button>
+        </div>
+
+        <div class="flex-1 overflow-hidden">
+          <iframe :src="selectedFile.url" class="w-full h-full border-0" />
         </div>
       </div>
     </div>
-  </transition>
+  </div>
 </template>
 
 <script>
@@ -57,7 +68,8 @@ export default {
       lampiranList: [],
       loading: false,
       error: null,
-      lastFetchedNotaId: null
+      lastFetchedNotaId: null,
+      selectedFile: null
     };
   },
   watch: {
@@ -80,7 +92,6 @@ export default {
       }
 
       if (this.lastFetchedNotaId === this.notaId) {
-        console.log('Nota ID sudah di-fetch sebelumnya:', this.notaId);
         return;
       }
 
@@ -89,7 +100,6 @@ export default {
     },
 
     async fetchLampiran() {
-
       this.loading = true;
       this.error = null;
       this.lampiranList = [];
@@ -123,6 +133,14 @@ export default {
     closeModal() {
       this.$emit('close');
       this.lastFetchedNotaId = null;
+    },
+
+    openFilePreview(file) {
+      this.selectedFile = file;
+    },
+
+    closeFilePreview() {
+      this.selectedFile = null;
     }
   }
 };

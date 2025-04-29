@@ -19,6 +19,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'nik',
         'email',
         'password',
         'role',
@@ -69,4 +70,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(NotaPersetujuan::class, 'approver_id');
     }
+    public static $rules = [
+        'nik' => 'required|digits:16|unique:users',
+    ];
 }
