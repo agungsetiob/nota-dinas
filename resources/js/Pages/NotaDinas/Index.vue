@@ -239,7 +239,7 @@ const closeDeleteModal = () => {
     </div>
 
     <NotaModal v-if="isNotaModalOpen" :show="isNotaModalOpen" :isEdit="isEditMode" :notaData="selectedNota"
-      @close="closeNotaModal" />
+      @close="closeNotaModal"/>
     <SendNotaModal v-if="isSendModalOpen" :isOpen="isSendModalOpen" :notaId="selectedNota?.id" :userRole="authUser.role"
       @close="closeSendModal" />
     <LampiranModal v-if="isLampiranModalOpen" :isOpen="isLampiranModalOpen" :notaId="selectedNota?.id"
@@ -248,7 +248,7 @@ const closeDeleteModal = () => {
       @close="closeApprovalModal" />
     <ReturnNotaModal v-if="isReturnModalOpen" :isOpen="isReturnModalOpen" :notaId="selectedNota?.id"
       @close="closeReturnModal" />
-      <DeleteModal 
+    <DeleteModal 
       v-if="showDeleteModal"
       :show="showDeleteModal"
       :nota="selectedNota"

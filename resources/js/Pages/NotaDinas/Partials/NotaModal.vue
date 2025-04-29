@@ -1,5 +1,5 @@
 <script setup>
-import { useForm } from '@inertiajs/vue3';
+import { useForm, router } from '@inertiajs/vue3';
 
 const props = defineProps({
   show: Boolean,
@@ -19,14 +19,21 @@ const form = useForm({
 });
 
 const handleSubmit = () => {
+
   if (props.isEdit) {
     form.put(route('nota-dinas.update', form.id), {
-      onSuccess: () => emit('close'),
+      onSuccess: () => {
+        emit('close');
+        router.reload({ only: ['notas'] });
+      },
       preserveScroll: true,
     });
   } else {
     form.post(route('nota-dinas.store'), {
-      onSuccess: () => emit('close'),
+      onSuccess: () => {
+        emit('close');
+        router.reload({ only: ['notas'] });
+      },
       preserveScroll: true,
     });
   }
@@ -34,7 +41,7 @@ const handleSubmit = () => {
 </script>
 
 <template>
-  <div v-if="show" class="fixed z-50 inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
+  <div  v-if="show" class="fixed z-50 inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
     <div class="bg-white p-4 sm:p-6 rounded-lg w-11/12 sm:w-full max-w-5xl">
       <h3 class="text-lg font-semibold mb-4">{{ isEdit ? 'Edit Nota Dinas' : 'Tambah Nota Dinas' }}</h3>
 

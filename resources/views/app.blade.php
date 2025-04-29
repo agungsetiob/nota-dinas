@@ -18,11 +18,13 @@
     </head>
     <body class="font-sans antialiased">
         @inertia
-        
-        {{-- <footer class="bg-pattern text-gray-700 py-4 text-center w-full">
-            <div class="max-w-7xl mx-auto px-4">
-                <p class="text-sm">&copy; {{ date('Y') }} {{ config('app.name') }} Kabupaten Tanah Bumbu</p>
-            </div>
-        </footer> --}}
     </body>
+    <script>
+        console.log(
+            "%cSelamat Datang di EPENDI!\n\n%cElektronik Pengajuan Nota Dinas, merupakan sebuah project yang bertujuan untuk belajar lebih dalam tentang Laravel 12.\n\nVersi EPENDI ini menggunakan vue.js, terdapat versi lain yang menggunakan blade templating Laravel.\n\nUntuk informasi lebih lanjut silahkan ke: https://agungsetio.com",
+            "font-size: 25px;",
+            "font-size: 12px;"
+        );
+    </script>
+
 </html>
