@@ -45,6 +45,10 @@
                       </span>
                     </td>
                     <td class="px-4 py-2 flex gap-2">
+                      <Link :href="route('nota.pengiriman.history', nota.id)"
+                        class="px-3 py-1 text-xs sm:text-sm font-semibold rounded border transition border-red-500 text-red-400 hover:bg-red-100">
+                      Histori
+                      </Link>
                       <button @click="openHistoriModal(nota.id)" 
                               class="px-3 py-1 text-sm font-semibold rounded border border-yellow-500 text-yellow-400 hover:bg-yellow-100">
                         Histori
@@ -74,7 +78,7 @@
 </template>
   
 <script setup>
-import { Head } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import Pagination from '@/Components/Pagination.vue';
 import ApprovalHistoryModal from '@/Pages/NotaDinas/Partials/ApprovalHistoryModal.vue';
