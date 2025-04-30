@@ -242,7 +242,7 @@ const closeDeleteModal = () => {
       @close="closeNotaModal"/>
     <SendNotaModal v-if="isSendModalOpen" :isOpen="isSendModalOpen" :notaId="selectedNota?.id" :userRole="authUser.role"
       @close="closeSendModal" />
-    <LampiranModal v-if="isLampiranModalOpen" :isOpen="isLampiranModalOpen" :notaId="selectedNota?.id"
+      <LampiranModal :show="isLampiranModalOpen" :notaId="selectedNota?.id" 
       @close="closeLampiranModal" />
     <ApprovalModal v-if="isApprovalModalOpen" :isOpen="isApprovalModalOpen" :notaId="selectedNota?.id"
       @close="closeApprovalModal" />

@@ -1,12 +1,4 @@
 <template>
-  <transition
-    enter-active-class="transition ease-out duration-300"
-    enter-from-class="opacity-0 transform scale-90"
-    enter-to-class="opacity-100 transform scale-100"
-    leave-active-class="transition ease-in duration-200"
-    leave-from-class="opacity-100 transform scale-100"
-    leave-to-class="opacity-0 transform scale-95"
-  >
     <div v-if="isOpen" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
       <div class="bg-white rounded-lg shadow-xl w-11/12 max-w-3xl p-6 relative">
         <h2 class="text-lg font-bold mb-4">Kirim Nota</h2>
@@ -60,11 +52,11 @@
         </form>
       </div>
     </div>
-  </transition>
 </template>
 
 <script>
 import { useForm } from '@inertiajs/vue3';
+import Modal from '@/Components/Modal.vue';
 
 export default {
   name: "SendNotaModal",

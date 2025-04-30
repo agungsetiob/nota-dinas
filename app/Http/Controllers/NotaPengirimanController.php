@@ -134,6 +134,20 @@ class NotaPengirimanController extends Controller
             'catatan' => $request->catatan,
         ]);
 
+        $pengirim = Auth::user();
+        if (in_array($pengirim->role, ['asisten', 'sekda', 'bupati'])) {
+            NotaPersetujuan::create([
+                'nota_dinas_id'    => $notaDinas->id,
+                'approver_id'      => $pengirim->id,
+                'skpd_id'          => $notaDinas->skpd_id,
+                'role_approver'    => $pengirim->role,
+                'urutan'           => $pengirim->role === 'asisten' ? 1 : 2,
+                'status'           => 'dikembalikan',
+                'catatan_terakhir' => $request->catatan,
+                'tanggal_update'   => now(),
+            ]);
+        }
+
         $notaDinas->update([
             'status' => 'dikembalikan',
             'tahap_saat_ini' => 'skpd',
