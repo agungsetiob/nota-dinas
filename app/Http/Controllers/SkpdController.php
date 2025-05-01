@@ -13,16 +13,23 @@ class SkpdController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        $skpds = Skpd::with('asisten')->paginate(10);
+        $query = Skpd::with('asisten');
+    
+        if ($search = $request->search) {
+            $query->where('nama_skpd', 'like', '%' . $search . '%');
+        }
+    
+        $skpds = $query->paginate(10);
         $asistens = User::where('role', 'asisten')->where('status', 1)->get();
-        //sleep(1);
+    
         return Inertia::render('Skpds/Index', [
             'skpds' => $skpds,
             'asistens' => $asistens
         ]);
     }
+    
 
     /**
      * Store a newly created resource in storage.

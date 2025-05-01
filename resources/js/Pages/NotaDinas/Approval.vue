@@ -7,34 +7,32 @@
             <div class="flex justify-between items-center mb-4">
               <h2 class="text-lg sm:text-xl font-semibold text-gray-800">List Persetujuan Nota Dinas</h2>
             </div>
-  
-            <div v-if="$page.props.flash.error" class="mb-4 p-4 bg-red-100 border border-red-400 text-red-600 rounded">
-              <p>{{ $page.props.flash.error }}</p>
-            </div>
-  
-            <div class="overflow-x-auto">
-              <table class="table-auto w-full">
-                <thead>
-                  <tr class="bg-gray-300 text-left">
-                    <th class="px-4 py-2">Nomor</th>
-                    <th class="px-4 py-2">Perihal</th>
-                    <th class="px-4 py-2">Tahapan</th>
-                    <th class="px-4 py-2">Tanggal</th>
-                    <th class="px-4 py-2">Status</th>
-                    <th class="px-4 py-2"></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="nota in notas.data" :key="nota.id" class="hover:bg-gray-100 transition">
-                    <td class="px-4 py-2">{{ nota.nomor_nota }}</td>
-                    <td class="px-4 py-2">{{ nota.perihal }}</td>
-                    <td class="px-4 py-2">
+            <div class="space-y-3">
+              <div v-for="nota in notas.data" :key="nota.id" class="border rounded-lg p-4 hover:shadow-md transition">
+                <div class="grid grid-cols-2 md:grid-cols-12 gap-4">
+                  <div class="md:col-span-2">
+                    <div class="text-xs text-gray-500">Nomor</div>
+                    <div class="font-medium">{{ nota.nomor_nota }}</div>
+                  </div>
+                  <div class="md:col-span-4">
+                    <div class="text-xs text-gray-500">Perihal</div>
+                    <div class="font-medium">{{ nota.perihal }}</div>
+                  </div>
+                  <div class="md:col-span-2">
+                    <div class="text-xs text-gray-500">Tahapan</div>
+                    <div>
                       <span class="px-2 py-1 text-sm font-semibold rounded-full bg-cyan-400 text-white">
                         {{ capitalizeFirstLetter(nota.tahap_saat_ini) }}
                       </span>
-                    </td>
-                    <td class="px-4 py-2">{{ formatDate(nota.tanggal_pengajuan) }}</td>
-                    <td class="px-4 py-2">
+                    </div>
+                  </div>                  
+                  <div class="md:col-span-1">
+                    <div class="text-xs text-gray-500">Tanggal</div>
+                    <div>{{ formatDate(nota.tanggal_pengajuan) }}</div>
+                  </div>                  
+                  <div class="md:col-span-1">
+                    <div class="text-xs text-gray-500">Status</div>
+                    <div>
                       <span class="px-3 py-1 text-sm font-semibold rounded-full" 
                             :class="{
                               'bg-blue-500 text-white': nota.status === 'proses',
@@ -43,32 +41,40 @@
                             }">
                         {{ capitalizeFirstLetter(nota.status) }}
                       </span>
-                    </td>
-                    <td class="px-4 py-2 flex gap-2">
-                      <Link :href="route('nota.pengiriman.history', nota.id)"
-                        class="px-3 py-1 text-xs sm:text-sm font-semibold rounded border transition border-red-500 text-red-400 hover:bg-red-100">
-                      Histori
+                    </div>
+                  </div>                  
+                  <div class="md:col-span-1 flex justify-end gap-2 items-center">
+                    <Tooltip text="Riwayat Pengiriman" bgColor="bg-green-500">
+                      <Link
+                        :href="route('nota.pengiriman.history', nota.id)"
+                        class="px-2 py-1 text-xs sm:text-sm font-semibold rounded border transition border-red-500 text-green-400 hover:bg-red-100"
+                      >
+                        <font-awesome-icon icon="paper-plane" />
                       </Link>
-                      <button @click="openHistoriModal(nota.id)" 
-                              class="px-3 py-1 text-sm font-semibold rounded border border-yellow-500 text-yellow-400 hover:bg-yellow-100">
-                        Histori
+                    </Tooltip>
+                    <Tooltip text="Riwayat Persetujuan" bgColor="bg-red-500">
+                      <button
+                        @click="openHistoriModal(nota.id)"
+                        class="px-2 py-1 text-sm font-semibold rounded border border-green-500 text-red-400 hover:bg-green-100"
+                      >
+                        <font-awesome-icon icon="check" />
                       </button>
-                    </td>
-                  </tr>
-                  <tr v-if="notas.data.length === 0">
-                    <td colspan="6" class="px-4 py-2 text-center">Belum ada nota dinas disetujui</td>
-                  </tr>
-                </tbody>
-              </table>
+                    </Tooltip>
+                  </div>
+                </div>
+              </div>
+              
+              <div v-if="notas.data.length === 0" class="border rounded-lg p-4 text-center">
+                Belum ada nota dinas disetujui
+              </div>
             </div>
-  
+
             <div class="mt-4">
               <Pagination :links="notas.links" />
             </div>
           </div>
         </div>
       </div>
-  
       <ApprovalHistoryModal 
         :show="showHistoriModal" 
         @close="closeHistoriModal"
@@ -81,6 +87,7 @@
 import { Head, Link } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import Pagination from '@/Components/Pagination.vue';
+import Tooltip from '@/Components/Tooltip.vue';
 import ApprovalHistoryModal from '@/Pages/NotaDinas/Partials/ApprovalHistoryModal.vue';
 import { ref } from 'vue';
 

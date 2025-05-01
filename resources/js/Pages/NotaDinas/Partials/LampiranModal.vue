@@ -1,5 +1,6 @@
 <template>
-  <Modal :show="show" @close="closeModal" maxWidth="4xl">
+  <!-- Attachment List Modal -->
+  <Modal :show="show" @close="closeModal">
     <div class="rounded-lg shadow-lg p-6 w-full">
       <div class="flex justify-between items-center border-b pb-3 mb-4">
         <h2 class="text-lg font-semibold text-gray-800">Daftar Lampiran</h2>
@@ -22,20 +23,24 @@
       </ul>
     </div>
   </Modal>
-    <!-- Preview Lampiran -->
-    <teleport to="body">
-    <div v-if="selectedFile" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
-      <div class="bg-red-100 rounded-lg shadow-xl w-full h-full p-6 relative flex flex-col">
-        <div class="flex justify-between items-center mb-4">
-          <h3 class="text-lg font-semibold">{{ selectedFile.name }}</h3>
-          <button @click="closeFilePreview" class="text-gray-400 hover:text-gray-700">✖</button>
-        </div>
-        <div class="flex-1 overflow-hidden">
-          <iframe :src="selectedFile.url" class="w-full h-full border-0" />
-        </div>
+
+  <!-- Attachment Preview Modal -->
+  <Modal :show="!!selectedFile" @close="closeFilePreview" maxWidth="fullscreen">
+    <div class="h-dvh p-6 flex flex-col">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-lg font-semibold">{{ selectedFile?.name }}</h3>
+        <button @click="closeFilePreview" class="text-gray-400 hover:text-gray-700">✖</button>
+      </div>
+      <div class="flex-1 overflow-hidden">
+        <iframe 
+          v-if="selectedFile"
+          :src="selectedFile.url" 
+          class="w-full h-full border-0 bg-white" 
+          frameborder="0"
+        />
       </div>
     </div>
-    </teleport>
+  </Modal>
 </template>
 
 <script setup>

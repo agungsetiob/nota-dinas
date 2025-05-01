@@ -1,15 +1,21 @@
 <script setup>
-import { Head, Link, usePage } from '@inertiajs/vue3';
-import { ref, computed } from 'vue';
+import { Head, Link, usePage, router } from '@inertiajs/vue3';
+import { ref, computed, watch } from 'vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import Pagination from '@/Components/Pagination.vue';
-
+import Tooltip from '@/Components/Tooltip.vue';
 import NotaModal from '@/Pages/NotaDinas/Partials/NotaModal.vue';
 import SendNotaModal from '@/Pages/NotaDinas/Partials/SendNotaModal.vue';
 import LampiranModal from '@/Pages/NotaDinas/Partials/LampiranModal.vue';
 import DeleteModal from '@/Pages/NotaDinas/Partials/DeleteModal.vue';
 import ApprovalModal from '@/Pages/NotaDinas/Partials/ApprovalModal.vue';
 import ReturnNotaModal from '@/Pages/NotaDinas/Partials/ReturnNotaModal.vue';
+import SearchInput from '@/Components/SearchInput.vue';
+
+const search = ref('');
+watch(search, (val) => {
+  router.get(route('nota-dinas.index'), { search: val }, { preserveState: true, replace: true });
+});
 
 const props = defineProps({
   notas: Object,
@@ -101,14 +107,15 @@ function closeApprovalModal() {
   isApprovalModalOpen.value = false;
 }
 
-function openReturnModal(nota) {
+const openReturnModal = (nota) => {
   selectedNota.value = nota;
   isReturnModalOpen.value = true;
-}
+};
 
-function closeReturnModal() {
+const closeReturnModal = () => {
   isReturnModalOpen.value = false;
-}
+  selectedNota.value = null;
+};
 
 const openDeleteModal = (nota) => {
   selectedNota.value = nota;
@@ -126,7 +133,7 @@ const closeDeleteModal = () => {
   <AuthenticatedLayout>
     <div class="pt-6 sm:pt-24 mx-2 sm:px-2">
       <div class="max-w-8xl mx-auto sm:px-6 lg:px-6">
-        <div class="bg-white shadow-sm sm:rounded-lg p-6">
+        <div class="bg-white shadow-sm sm:rounded-lg p-6 overflow-x-auto">
           <div class="flex justify-between items-center mb-4">
             <h2 class="text-lg sm:text-xl font-semibold text-gray-800">Nota Dinas</h2>
             <template v-if="authUser.role === 'skpd'">
@@ -149,107 +156,136 @@ const closeDeleteModal = () => {
               </button>
             </div>
           </div>
-
-          <div class="overflow-x-auto">
-            <table class="table-auto w-full">
-              <thead>
-                <tr class="bg-gray-300 text-left">
-                  <th class="px-3 py-2">Nomor</th>
-                  <th class="px-3 py-2">Perihal</th>
-                  <th class="px-3 py-2">Posisi</th>
-                  <th class="px-3 py-2">Tanggal</th>
-                  <th class="px-3 py-2">Status</th>
-                  <th class="px-3 py-2"></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="nota in notas.data" :key="nota.id" class="hover:bg-red-50 transition even:bg-gray-100">
-                  <td class="px-3 py-2">{{ nota.nomor_nota }}</td>
-                  <td class="px-3 py-2">{{ nota.perihal }}</td>
-                  <td class="px-3 py-2">
-                    <span
-                      class="px-2 py-1 text-sm font-semibold rounded-full transition bg-cyan-400 text-white hover:bg-cyan-600">
+          <div class="space-y-3">
+            <SearchInput v-model:search="search" />
+            <div v-for="nota in notas.data" :key="nota.id" class="border rounded-lg p-4 hover:shadow-md transition">
+              <div class="grid grid-cols-2 md:grid-cols-12 gap-4">
+                <div class="md:col-span-2 xs:col-span-1">
+                  <div class="text-xs text-gray-500">Nomor</div>
+                  <div class="font-medium">{{ nota.nomor_nota }}</div>
+                </div>
+                <div class="md:col-span-4">
+                  <div class="text-xs text-gray-500">Perihal</div>
+                  <div class="font-medium">{{ nota.perihal }}</div>
+                </div>
+                <div class="md:col-span-1">
+                  <div class="text-xs text-gray-500">Posisi</div>
+                  <div>
+                    <span class="px-2 py-1 text-sm font-semibold rounded-full transition bg-cyan-400 text-white hover:bg-cyan-600">
                       {{ nota.tahap_saat_ini }}
                     </span>
-                  </td>
-                  <td class="px-3 py-2">{{ formatDate(nota.tanggal_pengajuan) }}</td>
-                  <td class="px-3 py-2">
-                    <span class="px-3 py-1 text-sm font-semibold rounded-full transition"
-                      :class="statusClass(nota.status)">
+                  </div>
+                </div>
+                <div class="md:col-span-2">
+                  <div class="text-xs text-gray-500">Tanggal</div>
+                  <div>{{ formatDate(nota.tanggal_pengajuan) }}</div>
+                </div>
+                <div class="md:col-span-1">
+                  <div class="text-xs text-gray-500">Status</div>
+                  <div>
+                    <span class="px-3 py-1 text-sm font-semibold rounded-full transition" :class="statusClass(nota.status)">
                       {{ capitalize(nota.status) }}
                     </span>
-                  </td>
-                  <td class="px-3 py-4 flex gap-2">
-                    <template
-                      v-if="authUser.role === 'skpd' && (nota.status === 'draft' || nota.status === 'dikembalikan')">
+                  </div>
+                </div>
+                <div class="flex justify-end gap-2 md:col-span-2 items-center">
+                  <template v-if="authUser.role === 'skpd' && (nota.status === 'draft' || nota.status === 'dikembalikan')">
+                    <Tooltip text="Edit Nota Dinas" bgColor="bg-blue-500">
                       <button @click="openEditModal(nota)"
                         class="px-2 py-1 text-xs sm:text-sm font-semibold rounded border transition border-blue-500 text-blue-400 hover:bg-blue-100">
                         <font-awesome-icon icon="edit" />
                       </button>
+                    </Tooltip>
+                    <Tooltip text="Delete Nota Dinas" bgColor="bg-red-500">
                       <button @click="openDeleteModal(nota)"
                         class="px-2 py-1 text-xs sm:text-sm font-semibold rounded border transition border-red-500 text-red-500 hover:bg-red-100">
                         <font-awesome-icon icon="trash" />
                       </button>
+                    </Tooltip>
+                    <Tooltip text="Kirim ke Asisten" bgColor="bg-green-500">
                       <button @click="openSendModal(nota)"
                         class="px-2 py-1 text-xs sm:text-sm font-semibold rounded border transition border-green-500 text-green-600 hover:bg-green-100">
                         <font-awesome-icon icon="paper-plane" />
                       </button>
-                    </template>
-                    <template
-                      v-if="(authUser.role === 'asisten' && nota.tahap_saat_ini === 'asisten') || (authUser.role === 'sekda' && nota.tahap_saat_ini === 'sekda')">
+                    </Tooltip>
+                  </template>
+                  <template v-if="(authUser.role === 'asisten' && nota.tahap_saat_ini === 'asisten') || (authUser.role === 'sekda' && nota.tahap_saat_ini === 'sekda')">
+                    <Tooltip text="Kirim Nota Dinas" bgColor="bg-green-500">
                       <button @click="openSendModal(nota)"
                         class="px-2 py-1 text-xs sm:text-sm font-semibold rounded border transition border-green-500 text-green-600 hover:bg-green-100">
                         <font-awesome-icon icon="paper-plane" />
                       </button>
+                    </Tooltip>
+                    <Tooltip text="Pengembalian Nota Dinas" bgColor="bg-red-500">
+                      <button 
+                        @click="openReturnModal(nota)"
+                        class="px-2 py-1 text-xs sm:text-sm font-semibold rounded border transition border-red-500 text-red-600 hover:bg-red-100"
+                      >
+                        <font-awesome-icon icon="undo" />
+                      </button>
+                    </Tooltip>
+                  </template>
+                  <template v-else-if="authUser.role === 'bupati' && nota.tahap_saat_ini === 'bupati'">
+                    <Tooltip text="Pengembalian Nota Dinas" bgColor="bg-red-500">
                       <button @click="openReturnModal(nota)"
                         class="px-2 py-1 text-xs sm:text-sm font-semibold rounded border transition border-red-500 text-red-600 hover:bg-red-100">
                         <font-awesome-icon icon="undo" />
                       </button>
-                    </template>
-                    <template v-else-if="authUser.role === 'bupati' && nota.tahap_saat_ini === 'bupati'">
-                      <button @click="openReturnModal(nota)"
-                        class="px-2 py-1 text-xs sm:text-sm font-semibold rounded border transition border-red-500 text-red-600 hover:bg-red-100">
-                        <font-awesome-icon icon="undo" />
-                      </button>
+                    </Tooltip>
+                    <Tooltip text="Setujui atau Tolak" bgColor="bg-violet-500">
                       <button @click="openApprovalModal(nota)"
                         class="px-3 py-1 text-sm font-semibold rounded border transition border-blue-500 text-gray-600 hover:bg-blue-200">
                         <font-awesome-icon icon="check" class="text-green-500" /> or <font-awesome-icon icon="x"
                           class="text-red-500" />
                       </button>
-                    </template>
+                    </Tooltip>
+                  </template>
+                  <Tooltip text="List Lampiran" bgColor="bg-gray-500">
                     <button @click="openLampiranModal(nota)"
                       class="px-2 py-1 text-xs sm:text-sm font-semibold rounded border transition border-gray-500 text-gray-600 hover:bg-gray-200">
                       <font-awesome-icon icon="paperclip" />
                     </button>
-                    <Link :href="route('nota.pengiriman.history', nota.id)"
-                      class="px-3 py-1 text-xs sm:text-sm font-semibold rounded border transition border-yellow-500 text-yellow-400 hover:bg-yellow-100">
-                    Histori
+                  </Tooltip>
+                  <Tooltip text="Riwayat Pengiriman" bgColor="bg-yellow-500">
+                    <Link
+                      :href="route('nota.pengiriman.history', nota.id)"
+                      class="px-2 py-1 text-xs sm:text-sm font-semibold rounded border transition border-yellow-500 text-yellow-400 hover:bg-yellow-100"
+                    >
+                      <font-awesome-icon icon="clock-rotate-left" />
                     </Link>
-                  </td>
-                </tr>
-                <tr v-if="notas.data.length === 0">
-                  <td colspan="6" class="px-3 py-2 text-center text-red-500">Belum ada nota dinas</td>
-                </tr>
-              </tbody>
-            </table>
+                  </Tooltip>
+                </div>
+              </div>
+            </div>
+            <div v-if="notas.data.length === 0" class="border rounded-lg p-4 text-center text-red-500">
+              Tidak ada nota dinas
+            </div>
           </div>
           <Pagination :links="notas.links" :meta="{ from: notas.from, to: notas.to, total: notas.total }" />
         </div>
       </div>
     </div>
-
     <NotaModal v-if="isNotaModalOpen" :show="isNotaModalOpen" :isEdit="isEditMode" :notaData="selectedNota"
       @close="closeNotaModal"/>
-    <SendNotaModal v-if="isSendModalOpen" :isOpen="isSendModalOpen" :notaId="selectedNota?.id" :userRole="authUser.role"
+    <SendNotaModal 
+      :show="isSendModalOpen" 
+      :notaId="selectedNota?.id" 
+      :userRole="authUser.role"
       @close="closeSendModal" />
-      <LampiranModal :show="isLampiranModalOpen" :notaId="selectedNota?.id" 
+      <LampiranModal 
+      :show="isLampiranModalOpen" 
+      :notaId="selectedNota?.id" 
       @close="closeLampiranModal" />
-    <ApprovalModal v-if="isApprovalModalOpen" :isOpen="isApprovalModalOpen" :notaId="selectedNota?.id"
+    <ApprovalModal 
+      :show="isApprovalModalOpen" 
+      :notaId="selectedNota?.id"
       @close="closeApprovalModal" />
-    <ReturnNotaModal v-if="isReturnModalOpen" :isOpen="isReturnModalOpen" :notaId="selectedNota?.id"
-      @close="closeReturnModal" />
+      <ReturnNotaModal 
+        :show="isReturnModalOpen" 
+        :notaId="selectedNota?.id"
+        @close="closeReturnModal" 
+      />
     <DeleteModal 
-      v-if="showDeleteModal"
       :show="showDeleteModal"
       :nota="selectedNota"
       @close="closeDeleteModal"

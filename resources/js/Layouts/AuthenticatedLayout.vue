@@ -20,27 +20,27 @@ const menuItems = {
     { label: 'Users', route: 'users.index', icon: ['fas', 'user'] },
     { label: 'SKPD', route: 'skpds.index', icon: ['fas', 'sitemap'] },
     { label: 'Nota Dinas', route: 'nota-dinas.index', icon: ['fas', 'file-lines'] },
-    { label: 'Approval', route: 'approval-histories.index', icon: ['fas', 'clock-rotate-left'] },
+    { label: 'Approval', route: 'approval-histories.index', icon: ['fas', 'circle-check'] },
   ],
   skpd: [
     { label: 'Dashboard', route: 'dashboard', icon: ['fas', 'home'] },
     { label: 'Nota Dinas', route: 'nota-dinas.index', icon: ['fas', 'file-lines'] },
-    { label: 'Approval', route: 'approval-histories.index', icon: ['fas', 'clock-rotate-left'] },
+    { label: 'Approval', route: 'approval-histories.index', icon: ['fas', 'circle-check'] },
   ],
   asisten: [
     { label: 'Dashboard', route: 'dashboard', icon: ['fas', 'home'] },
     { label: 'Nota Dinas', route: 'nota-dinas.index', icon: ['fas', 'file-lines'] },
-    { label: 'Approval', route: 'approval-histories.index', icon: ['fas', 'clock-rotate-left'] },
+    { label: 'Approval', route: 'approval-histories.index', icon: ['fas', 'circle-check'] },
   ],
   sekda: [
     { label: 'Dashboard', route: 'dashboard', icon: ['fas', 'home'] },
     { label: 'Nota Dinas', route: 'nota-dinas.index', icon: ['fas', 'file-lines'] },
-    { label: 'Approval', route: 'approval-histories.index', icon: ['fas', 'clock-rotate-left'] },
+    { label: 'Approval', route: 'approval-histories.index', icon: ['fas', 'circle-check'] },
   ],
   bupati: [
     { label: 'Dashboard', route: 'dashboard', icon: ['fas', 'home'] },
     { label: 'Nota Dinas', route: 'nota-dinas.index', icon: ['fas', 'file-lines'] },
-    { label: 'Approval', route: 'approval-histories.index', icon: ['fas', 'clock-rotate-left'] },
+    { label: 'Approval', route: 'approval-histories.index', icon: ['fas', 'circle-check'] },
   ],
 };
 
@@ -158,7 +158,7 @@ const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
       <!-- Bottom Navigation -->
       <header class="border bg-white shadow fixed bottom-0 left-0 right-0 z-20 h-12 sm:sticky sm:top-16 sm:h-auto">
         <div class="max-w-7xl mx-auto py-2 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center">
-          <nav class="flex overflow-x-auto whitespace-nowrap scrollbar-hide w-full gap-6 sm:justify-center">
+          <nav class="flex overflow-x-auto whitespace-nowrap scrollbar-hide w-full gap-6 justify-center">
             <template v-for="menu in menus" :key="menu.route">
               <Link
                 :href="route(menu.route)"

@@ -1,9 +1,16 @@
 <script setup>
-import { Head, useForm, usePage } from '@inertiajs/vue3';
+import { Head, useForm, usePage, router } from '@inertiajs/vue3';
+import { computed, ref, watch } from 'vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import Pagination from '@/Components/Pagination.vue';
 import SkpdModal from "@/Pages/Skpds/Partials/SkpdModal.vue";
-import { computed, ref } from 'vue';
+import SearchInput from '@/Components/SearchInput.vue';
+import Tooltip from '@/Components/Tooltip.vue';
+
+const search = ref('');
+watch(search, (val) => {
+  router.get(route('skpds.index'), { search: val }, { preserveState: true, replace: true });
+});
 
 const props = defineProps({
     skpds: Object,
@@ -13,7 +20,6 @@ const props = defineProps({
 const page = usePage();
 const authUser = computed(() => page.props.auth.user);
 
-// modal control
 const isModalOpen = ref(false);
 const selectedSkpd = ref(null);
 
@@ -57,6 +63,7 @@ function toggleStatus(skpdId, currentStatus) {
                     </div>
 
                     <div class="overflow-x-auto">
+                        <SearchInput v-model:search="search" />
                         <table class="table-auto w-full">
                             <thead>
                                 <tr class="bg-gray-300 text-left">
@@ -95,12 +102,14 @@ function toggleStatus(skpdId, currentStatus) {
                                         </button>
                                     </td>
                                     <td class="px-4 py-2 flex gap-2">
-                                        <button
-                                            @click="openModal(skpd)"
-                                            class="px-2 py-1 text-xs sm:text-sm font-semibold rounded border transition border-blue-500 text-blue-400 w-20 hover:bg-blue-100"
-                                        >
-                                            Edit
-                                        </button>
+                                        <Tooltip text="Edit SKPD" bgColor="bg-blue-500">
+                                            <button
+                                                @click="openModal(skpd)"
+                                                class="px-2 py-1 text-xs sm:text-sm font-semibold rounded border transition border-blue-500 text-blue-400 hover:bg-blue-100"
+                                            >
+                                                <font-awesome-icon icon="edit" />
+                                            </button>
+                                        </Tooltip>
                                     </td>
                                 </tr>
                                 <tr v-if="skpds.data.length === 0">
@@ -120,7 +129,6 @@ function toggleStatus(skpdId, currentStatus) {
         </div>
 
         <SkpdModal
-            v-if="isModalOpen"
             :show="isModalOpen"
             :skpd="selectedSkpd"
             :asistens="asistens"

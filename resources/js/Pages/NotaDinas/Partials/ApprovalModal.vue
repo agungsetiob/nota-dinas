@@ -1,6 +1,6 @@
 <template>
-  <div v-if="isOpen" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
-    <div class="bg-white rounded-lg p-5 w-full max-w-xl">
+  <Modal :show="show" @close="closeModal" maxWidth="xl">
+    <div class="bg-white rounded-lg p-5 w-full">
       <h2 class="text-lg font-semibold text-gray-700 mb-4">Konfirmasi Persetujuan</h2>
       <div class="mb-4">
         <label class="block font-medium mb-1">Catatan</label>
@@ -37,14 +37,15 @@
         </button>
       </div>
     </div>
-  </div>
+  </Modal>
 </template>
 
 <script setup>
 import { useForm } from '@inertiajs/vue3';
+import Modal from '@/Components/Modal.vue';
 
 const props = defineProps({
-  isOpen: Boolean,
+  show: Boolean,
   notaId: [Number, String]
 });
 

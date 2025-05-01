@@ -13,29 +13,39 @@ use Inertia\Inertia;
 
 class NotaDinasController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
+        $search = $request->input('search');
+
         $query = NotaDinas::query();
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('nomor_nota', 'like', "%$search%")
+                ->orWhere('perihal', 'like', "%$search%")
+                ->orWhere('tahap_saat_ini', 'like', "%$search%");
+            });
+        }
 
         switch ($user->role) {
             case 'skpd':
                 $query->where('skpd_id', $user->skpd_id)
-                      ->whereIn('status', ['draft', 'dikembalikan', 'proses']);
-                break;            
+                    ->whereIn('status', ['draft', 'dikembalikan', 'proses']);
+                break;
             case 'asisten':
                 $query->whereHas('skpd', function ($q) use ($user) {
                     $q->where('asisten_id', $user->id);
                 })->where('status', 'proses')
-                  ->where('tahap_saat_ini', 'asisten');
+                ->where('tahap_saat_ini', 'asisten');
                 break;
             case 'sekda':
                 $query->where('tahap_saat_ini', 'sekda')
-                      ->where('status', 'proses');
+                    ->where('status', 'proses');
                 break;
             case 'bupati':
                 $query->where('tahap_saat_ini', 'bupati')
-                      ->where('status', 'proses');
+                    ->where('status', 'proses');
                 break;
             case 'admin':
                 // Admin can see all data
@@ -44,9 +54,12 @@ class NotaDinasController extends Controller
                 return abort(403, 'Akses tidak diizinkan');
         }
 
-        $notas = $query->paginate(10);
+        $notas = $query->latest()->paginate(10)->withQueryString();
 
-        return Inertia::render('NotaDinas/Index', compact('notas'));
+        return Inertia::render('NotaDinas/Index', [
+            'notas' => $notas,
+            'search' => $search,
+        ]);
     }
 
     public function store(Request $request)

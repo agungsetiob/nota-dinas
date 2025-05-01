@@ -1,10 +1,12 @@
 <script setup>
 import { useForm } from '@inertiajs/vue3';
+import Modal from '@/Components/Modal.vue';
 
 const props = defineProps({
-    nota: Object,
-    show: Boolean
+  nota: [Object, null],
+  show: Boolean
 });
+
 
 const emit = defineEmits(['close']);
 
@@ -24,8 +26,8 @@ function deleteNota() {
 </script>
 
 <template>
-    <div v-if="show" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white rounded-lg p-6 max-w-md w-full">
+    <Modal :show="show" @close="$emit('close')" maxWidth="xl">
+        <div class="bg-white rounded-lg p-6 w-full">
             <div class="flex justify-between items-start mb-4">
                 <h3 class="text-lg font-semibold">Konfirmasi Hapus</h3>
                 <button @click="$emit('close')" class="text-gray-500 hover:text-gray-700">
@@ -35,7 +37,7 @@ function deleteNota() {
                 </button>
             </div>
             
-            <p class="mb-6">Anda yakin ingin menghapus nota dinas no <span class="font-semibold text-red-400">{{ nota.nomor_nota }}</span>?
+            <p v-if="nota" class="mb-6">Anda yakin ingin menghapus nota dinas no <span class="font-semibold text-red-400">{{ nota?.nomor_nota }}</span>
                 <br>Data yang sudah dihapus tidak dapat dikembalikan.</p>
             
             <div class="flex justify-end space-x-3">
@@ -56,5 +58,5 @@ function deleteNota() {
                 </button>
             </div>
         </div>
-    </div>
+    </Modal>
 </template>

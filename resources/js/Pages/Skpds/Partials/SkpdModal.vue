@@ -1,6 +1,7 @@
 <script setup>
-import { reactive, watch, computed } from 'vue'
+import { watch, computed } from 'vue'
 import { useForm } from '@inertiajs/vue3'
+import Modal from '@/Components/Modal.vue';
 
 const props = defineProps({
   show: Boolean,
@@ -48,11 +49,8 @@ const close = () => {
 </script>
 
 <template>
-  <div
-    v-if="show"
-    class="fixed inset-0 z-50 bg-gray-800 bg-opacity-50 flex justify-center items-center"
-  >
-    <div class="bg-white p-4 sm:p-6 rounded-lg w-11/12 sm:w-full max-w-2xl">
+  <Modal :show="show" @close="close" maxWidth="2xl">
+    <div class="bg-white p-4 sm:p-6 rounded-lg w-11/12 sm:w-full">
       <h3 class="text-lg font-semibold mb-4">
         {{ isEdit ? 'Edit SKPD' : 'Tambah SKPD' }}
       </h3>
@@ -107,5 +105,5 @@ const close = () => {
         </div>
       </form>
     </div>
-  </div>
+  </Modal>
 </template>

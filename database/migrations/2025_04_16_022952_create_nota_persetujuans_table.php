@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('skpd_id')->constrained('skpds')->onDelete('cascade')->comment('SKPD pemilik nota dinas');
             $table->enum('role_approver', ['asisten', 'sekda', 'bupati'])->comment('Peran pemberi persetujuan');
             $table->unsignedTinyInteger('urutan')->comment('Urutan persetujuan dalam proses');
-            $table->enum('status', ['disetujui', 'ditolak'])->default('disetujui');
+            $table->enum('status', ['disetujui', 'ditolak', 'dikembalikan'])->default('disetujui');
             $table->text('catatan_terakhir')->nullable()->comment('Catatan dari pemberi persetujuan');
             $table->timestamp('tanggal_update')->nullable()->comment('Waktu terakhir pembaruan status');
             $table->timestamps();
