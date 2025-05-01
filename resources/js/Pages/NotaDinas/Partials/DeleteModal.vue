@@ -3,7 +3,7 @@ import { useForm } from '@inertiajs/vue3';
 import Modal from '@/Components/Modal.vue';
 
 const props = defineProps({
-  nota: [Object, null],
+  nota: Object,
   show: Boolean
 });
 

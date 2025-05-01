@@ -160,11 +160,11 @@ const closeDeleteModal = () => {
             <SearchInput v-model:search="search" />
             <div v-for="nota in notas.data" :key="nota.id" class="border rounded-lg p-4 hover:shadow-md transition">
               <div class="grid grid-cols-2 md:grid-cols-12 gap-4">
-                <div class="md:col-span-2 xs:col-span-1">
+                <div class="md:col-span-2">
                   <div class="text-xs text-gray-500">Nomor</div>
-                  <div class="font-medium">{{ nota.nomor_nota }}</div>
+                  <p class="font-medium break-all">{{ nota.nomor_nota }}</p>
                 </div>
-                <div class="md:col-span-4">
+                <div class="md:col-span-3">
                   <div class="text-xs text-gray-500">Perihal</div>
                   <div class="font-medium">{{ nota.perihal }}</div>
                 </div>
@@ -176,11 +176,11 @@ const closeDeleteModal = () => {
                     </span>
                   </div>
                 </div>
-                <div class="md:col-span-2">
+                <div class="md:col-span-1">
                   <div class="text-xs text-gray-500">Tanggal</div>
                   <div>{{ formatDate(nota.tanggal_pengajuan) }}</div>
                 </div>
-                <div class="md:col-span-1">
+                <div class="md:col-span-2">
                   <div class="text-xs text-gray-500">Status</div>
                   <div>
                     <span class="px-3 py-1 text-sm font-semibold rounded-full transition" :class="statusClass(nota.status)">
@@ -280,9 +280,10 @@ const closeDeleteModal = () => {
       :show="isApprovalModalOpen" 
       :notaId="selectedNota?.id"
       @close="closeApprovalModal" />
-      <ReturnNotaModal 
+      <ReturnNotaModal
+        v-if="selectedNota"
         :show="isReturnModalOpen" 
-        :notaId="selectedNota?.id"
+        :notaId="selectedNota.id"
         @close="closeReturnModal" 
       />
     <DeleteModal 
