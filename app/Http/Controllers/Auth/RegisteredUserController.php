@@ -19,14 +19,29 @@ class RegisteredUserController extends Controller
     /**
      * Display the list of users.
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        $users = User::with('skpd')->paginate(10);
-        //sleep(1);
+        $search = $request->input('search');
+        $query = User::with('skpd');
+    
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%$search%")
+                  ->orWhere('email', 'like', "%$search%");
+            })
+            ->orWhereHas('skpd', function ($q) use ($search) {
+                $q->where('nama_skpd', 'like', "%$search%");
+            });
+        }
+    
+        $users = $query->latest()->paginate(10);
+    
         return Inertia::render('Users/Index', [
             'users' => $users,
+            'search' => $search,
         ]);
     }
+    
 
     /**
      * Display the registration view.
@@ -48,6 +63,7 @@ class RegisteredUserController extends Controller
     {
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
+            'nik' => ['required', 'digits:16', 'unique:users'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'role' => ['required', Rule::in(['skpd', 'asisten', 'sekda', 'bupati', 'admin'])],
@@ -62,6 +78,7 @@ class RegisteredUserController extends Controller
             'role' => $validated['role'],
             'jabatan' => $validated['jabatan'] ?? null,
             'skpd_id' => $validated['skpd_id'] ?? null,
+            'nik' => $validated['nik'],
         ]);
 
         event(new Registered($user));

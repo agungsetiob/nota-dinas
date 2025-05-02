@@ -1,17 +1,25 @@
 <script setup>
-import { Head, usePage, Link, useForm } from '@inertiajs/vue3';
+import { computed, ref, watch } from 'vue';
+import { Head, usePage, Link, useForm, router } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import Pagination from '@/Components/Pagination.vue';
-import { computed } from 'vue';
+import SearchInput from '@/Components/SearchInput.vue';
+import SuccessFlash from '@/Components/SuccessFlash.vue';
 
+const search = ref('');
+watch(search, (val) => {
+  router.get(route('users.index'), { search: val }, { preserveState: true, replace: true });
+});
+const flash = computed(() => page.props.flash || {});
+const clearFlash = () => {
+  flash.value.success = null;
+};
 const props = defineProps({
     users: Object,
 });
 
 const page = usePage();
 //const authUser = computed(() => page.props.auth.user);
-
-const flash = computed(() => page.props.flash || {});
 
 function toggleStatus(userId, currentStatus) {
     const form = useForm({
@@ -26,9 +34,9 @@ function toggleStatus(userId, currentStatus) {
 
 <template>
     <Head title="Users" />
-
     <AuthenticatedLayout>
-        <div v-show="!isLoading" class="pt-6 sm:pt-24 mx-2 sm:px-2">
+        <SuccessFlash :flash="flash" @clearFlash="clearFlash" />
+        <div class="pt-6 sm:pt-24 mx-2 sm:px-2">
             <div class="max-w-8xl mx-auto sm:px-6 lg:px-6">
                 <div class="bg-white shadow-sm sm:rounded-lg p-6">
                     <div class="flex justify-between items-center mb-4">
@@ -39,20 +47,6 @@ function toggleStatus(userId, currentStatus) {
                            class="inline-flex items-center px-3 sm:px-4 py-2 bg-indigo-500 text-white text-sm sm:text-base font-medium rounded hover:bg-indigo-700">
                             + Tambah Pengguna
                         </Link>
-                    </div>
-
-                    <div v-if="flash.success" class="mb-4">
-                        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
-                            <strong class="font-bold">Sukses! </strong>
-                            <span class="block sm:inline">{{ flash.success }}</span>
-                            <button @click="flash.success = null" class="absolute top-0 bottom-0 right-0 px-4 py-3">
-                                <svg class="fill-current h-6 w-6 text-green-700" role="button" xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20">
-                                    <title>Close</title>
-                                    <path d="M14.348 5.652a1 1 0 00-1.414-1.414L10 7.172 7.066 4.238a1 1 0 10-1.414 1.414L8.586 8.586 5.652 11.52a1 1 0 101.414 1.414L10 10.828l2.934 2.934a1 1 0 001.414-1.414L11.414 8.586l2.934-2.934z" />
-                                </svg>
-                            </button>
-                        </div>
                     </div>
 
                     <div v-if="flash.error" class="mb-4">
@@ -70,6 +64,7 @@ function toggleStatus(userId, currentStatus) {
                     </div>
 
                     <div class="overflow-x-auto">
+                        <SearchInput v-model:search="search" />
                         <table class="table-auto w-full">
                             <thead>
                                 <tr class="bg-gray-300 text-left">

@@ -6,11 +6,16 @@ import Pagination from '@/Components/Pagination.vue';
 import SkpdModal from "@/Pages/Skpds/Partials/SkpdModal.vue";
 import SearchInput from '@/Components/SearchInput.vue';
 import Tooltip from '@/Components/Tooltip.vue';
+import SuccessFlash from '@/Components/SuccessFlash.vue';
 
 const search = ref('');
 watch(search, (val) => {
   router.get(route('skpds.index'), { search: val }, { preserveState: true, replace: true });
 });
+const flash = computed(() => page.props.flash || {});
+const clearFlash = () => {
+  flash.value.success = null;
+};
 
 const props = defineProps({
     skpds: Object,
@@ -48,7 +53,7 @@ function toggleStatus(skpdId, currentStatus) {
     <Head title="SKPD" />
 
     <AuthenticatedLayout>
-
+        <SuccessFlash :flash="flash" @clearFlash="clearFlash" />
         <div class="pt-6 sm:pt-24 mx-2 sm:px-2">
             <div class="max-w-8xl mx-auto sm:px-6 lg:px-6">
                 <div class="bg-white shadow-sm sm:rounded-lg p-6">
@@ -105,7 +110,7 @@ function toggleStatus(skpdId, currentStatus) {
                                         <Tooltip text="Edit SKPD" bgColor="bg-blue-500">
                                             <button
                                                 @click="openModal(skpd)"
-                                                class="px-2 py-1 text-xs sm:text-sm font-semibold rounded border transition border-blue-500 text-blue-400 hover:bg-blue-100"
+                                                class="px-2 py-1 text-md sm:text-xl font-semibold rounded transition text-blue-600 hover:bg-blue-100"
                                             >
                                                 <font-awesome-icon icon="edit" />
                                             </button>

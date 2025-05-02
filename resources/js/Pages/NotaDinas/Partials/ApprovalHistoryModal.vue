@@ -3,7 +3,7 @@
       <div class="rounded-lg shadow-lg p-6 w-full">
         <div class="flex justify-between items-center border-b pb-3">
           <h2 class="text-lg font-semibold text-gray-800">Histori Persetujuan Nota Dinas</h2>
-          <button @click="closeModal" class="text-gray-500 hover:text-gray-700 text-xl">&times;</button>
+          <button @click="closeModal">✖</button>
         </div>
   
         <div class="overflow-x-auto">

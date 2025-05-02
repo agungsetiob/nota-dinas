@@ -96,7 +96,7 @@ class NotaPengirimanController extends Controller
         }else{
             return redirect()
             ->back()
-            ->with('success', "Nota berhasil dikirim ke " . ucfirst($ke) . " dan dicatat sebagai persetujuan.");
+            ->with('success', "Nota berhasil dikirim ke " . ucfirst($ke) . " dan dicatat sebagai persetujuan anda.");
         }
         
     }    

@@ -15,6 +15,7 @@ const props = defineProps({
 const form = useForm({
     name: '',
     email: '',
+    nik:'',
     jabatan: '',
     skpd_id: '',
     role: '',
@@ -62,6 +63,18 @@ const submit = () => {
                                 autocomplete="username"
                             />
                             <InputError class="mt-2" :message="form.errors.email" />
+                        </div>
+
+                        <div>
+                            <InputLabel for="nik" value="nik" />
+                            <TextInput
+                                id="nik"
+                                type="number"
+                                class="mt-1 block w-full"
+                                v-model="form.nik"
+                                required
+                            />
+                            <InputError class="mt-2" :message="form.errors.nik" />
                         </div>
 
                         <div>

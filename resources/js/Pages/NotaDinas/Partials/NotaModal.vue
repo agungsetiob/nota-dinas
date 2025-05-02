@@ -1,5 +1,7 @@
 <script setup>
+import { watch } from 'vue';
 import { useForm, router } from '@inertiajs/vue3';
+import Modal from '@/Components/Modal.vue';
 
 const props = defineProps({
   show: Boolean,
@@ -10,20 +12,42 @@ const props = defineProps({
 
 const emit = defineEmits(['close']);
 
+// Inisialisasi form tanpa mengisi nilai awal
 const form = useForm({
-  id: props.notaData?.id || '',
-  nomor_nota: props.notaData?.nomor_nota || '',
-  perihal: props.notaData?.perihal || '',
-  anggaran: props.notaData?.anggaran || '',
-  tanggal_pengajuan: props.notaData?.tanggal_pengajuan || '',
+  id: '',
+  nomor_nota: '',
+  perihal: '',
+  anggaran: '',
+  tanggal_pengajuan: '',
 });
 
-const handleSubmit = () => {
+// Fungsi untuk memperbarui nilai form sesuai dengan props.notaData
+const updateFormWithNotaData = () => {
+  form.id = props.notaData?.id || '';
+  form.nomor_nota = props.notaData?.nomor_nota || '';
+  form.perihal = props.notaData?.perihal || '';
+  form.anggaran = props.notaData?.anggaran || '';
+  form.tanggal_pengajuan = props.notaData?.tanggal_pengajuan || '';
+};
 
+// Watcher yang akan memperbarui form setiap kali notaData berubah
+watch(
+  () => props.notaData,
+  () => {
+    updateFormWithNotaData();
+  },
+  { immediate: true }
+);
+
+const closeModal = () => {
+  emit('close');
+};
+
+const handleSubmit = () => {
   if (props.isEdit) {
     form.put(route('nota-dinas.update', form.id), {
       onSuccess: () => {
-        emit('close');
+        closeModal();
         router.reload({ only: ['notas'] });
       },
       preserveScroll: true,
@@ -31,7 +55,7 @@ const handleSubmit = () => {
   } else {
     form.post(route('nota-dinas.store'), {
       onSuccess: () => {
-        emit('close');
+        closeModal();
         router.reload({ only: ['notas'] });
       },
       preserveScroll: true,
@@ -41,15 +65,29 @@ const handleSubmit = () => {
 </script>
 
 <template>
-  <div  v-if="show" class="fixed z-50 inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
-    <div class="bg-white p-4 sm:p-6 rounded-lg w-11/12 sm:w-full max-w-5xl">
-      <h3 class="text-lg font-semibold mb-4">{{ isEdit ? 'Edit Nota Dinas' : 'Tambah Nota Dinas' }}</h3>
-
-      <div v-if="Object.keys(form.errors).length > 0" class="mb-4 p-4 bg-red-50 border-l-4 border-red-500">
+  <Modal :show="show" @close="closeModal" maxWidth="5xl">
+    <div class="bg-white p-4 sm:p-6 rounded-lg">
+      <h3 class="text-lg font-semibold mb-4">
+        {{ isEdit ? 'Edit Nota Dinas' : 'Tambah Nota Dinas' }}
+      </h3>
+      
+      <div
+        v-if="Object.keys(form.errors).length > 0"
+        class="mb-4 p-4 bg-red-50 border-l-4 border-red-500"
+      >
         <div class="flex">
           <div class="flex-shrink-0">
-            <svg class="h-5 w-5 text-red-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+            <svg
+              class="h-5 w-5 text-red-500"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                clip-rule="evenodd"
+              />
             </svg>
           </div>
           <div class="ml-3">
@@ -66,22 +104,19 @@ const handleSubmit = () => {
           </div>
         </div>
       </div>
-
       <form @submit.prevent="handleSubmit">
-        <input type="hidden" v-model="form.method">
         <input type="hidden" v-model="form.id">
-
+        
         <div class="mb-4">
           <label for="nomor_nota" class="block text-sm font-medium text-gray-700">Nomor Nota</label>
-          <input 
-            type="text" 
-            v-model="form.nomor_nota" 
+          <input
+            type="text"
+            v-model="form.nomor_nota"
             required
-            :class="{
-              'mt-1 block w-full border rounded-md px-3 py-2 text-sm sm:text-base': true,
-              'border-gray-300': !form.errors.nomor_nota,
-              'border-red-500': form.errors.nomor_nota
-            }"
+            :class="[
+              'mt-1 block w-full border rounded-md px-3 py-2 text-sm sm:text-base',
+              form.errors.nomor_nota ? 'border-red-500' : 'border-gray-300'
+            ]"
           >
           <p v-if="form.errors.nomor_nota" class="mt-1 text-sm text-red-600">
             {{ form.errors.nomor_nota }}
@@ -90,15 +125,14 @@ const handleSubmit = () => {
 
         <div class="mb-4">
           <label for="perihal" class="block text-sm font-medium text-gray-700">Perihal</label>
-          <input 
-            type="text" 
-            v-model="form.perihal" 
+          <input
+            type="text"
+            v-model="form.perihal"
             required
-            :class="{
-              'mt-1 block w-full border rounded-md px-3 py-2 text-sm sm:text-base': true,
-              'border-gray-300': !form.errors.perihal,
-              'border-red-500': form.errors.perihal
-            }"
+            :class="[
+              'mt-1 block w-full border rounded-md px-3 py-2 text-sm sm:text-base',
+              form.errors.perihal ? 'border-red-500' : 'border-gray-300'
+            ]"
           >
           <p v-if="form.errors.perihal" class="mt-1 text-sm text-red-600">
             {{ form.errors.perihal }}
@@ -107,14 +141,13 @@ const handleSubmit = () => {
 
         <div class="mb-4">
           <label for="anggaran" class="block text-sm font-medium text-gray-700">Anggaran</label>
-          <input 
-            type="number" 
+          <input
+            type="number"
             v-model="form.anggaran"
-            :class="{
-              'mt-1 block w-full border rounded-md px-3 py-2 text-sm sm:text-base': true,
-              'border-gray-300': !form.errors.anggaran,
-              'border-red-500': form.errors.anggaran
-            }"
+            :class="[
+              'mt-1 block w-full border rounded-md px-3 py-2 text-sm sm:text-base',
+              form.errors.anggaran ? 'border-red-500' : 'border-gray-300'
+            ]"
           >
           <p v-if="form.errors.anggaran" class="mt-1 text-sm text-red-600">
             {{ form.errors.anggaran }}
@@ -123,25 +156,23 @@ const handleSubmit = () => {
 
         <div class="mb-4">
           <label for="tanggal_pengajuan" class="block text-sm font-medium text-gray-700">Tanggal Pengajuan</label>
-          <input 
-            type="date" 
-            v-model="form.tanggal_pengajuan" 
+          <input
+            type="date"
+            v-model="form.tanggal_pengajuan"
             required
-            :class="{
-              'mt-1 block w-full border rounded-md px-3 py-2 text-sm sm:text-base': true,
-              'border-gray-300': !form.errors.tanggal_pengajuan,
-              'border-red-500': form.errors.tanggal_pengajuan
-            }"
+            :class="[
+              'mt-1 block w-full border rounded-md px-3 py-2 text-sm sm:text-base',
+              form.errors.tanggal_pengajuan ? 'border-red-500' : 'border-gray-300'
+            ]"
           >
           <p v-if="form.errors.tanggal_pengajuan" class="mt-1 text-sm text-red-600">
             {{ form.errors.tanggal_pengajuan }}
           </p>
         </div>
-
         <div class="flex justify-end gap-2">
-          <button 
-            type="button" 
-            @click="emit('close')"
+          <button
+            type="button"
+            @click="closeModal"
             class="px-3 py-2 bg-gray-300 text-gray-700 text-sm sm:text-base rounded hover:bg-gray-400"
           >
             Batal
@@ -161,5 +192,5 @@ const handleSubmit = () => {
         </div>
       </form>
     </div>
-  </div>
+  </Modal>
 </template>

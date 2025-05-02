@@ -11,6 +11,7 @@ import DeleteModal from '@/Pages/NotaDinas/Partials/DeleteModal.vue';
 import ApprovalModal from '@/Pages/NotaDinas/Partials/ApprovalModal.vue';
 import ReturnNotaModal from '@/Pages/NotaDinas/Partials/ReturnNotaModal.vue';
 import SearchInput from '@/Components/SearchInput.vue';
+import SuccessFlash from '@/Components/SuccessFlash.vue';
 
 const search = ref('');
 watch(search, (val) => {
@@ -22,9 +23,13 @@ const props = defineProps({
   userRole: String,
 });
 
+const flash = computed(() => page.props.flash || {});
+const clearFlash = () => {
+  flash.value.success = null;
+};
+
 const page = usePage();
 const authUser = computed(() => page.props.auth.user);
-const flash = computed(() => page.props.flash || {});
 
 const isNotaModalOpen = ref(false);
 const isEditMode = ref(false);
@@ -131,6 +136,7 @@ const closeDeleteModal = () => {
 
   <Head title="Daftar Nota Dinas" />
   <AuthenticatedLayout>
+    <SuccessFlash :flash="flash" @clearFlash="clearFlash" />
     <div class="pt-6 sm:pt-24 mx-2 sm:px-2">
       <div class="max-w-8xl mx-auto sm:px-6 lg:px-6">
         <div class="bg-white shadow-sm sm:rounded-lg p-6 overflow-x-auto">
@@ -142,19 +148,6 @@ const closeDeleteModal = () => {
                 + Tambah Nota
               </button>
             </template>
-          </div>
-          <div v-if="flash.success" class="mb-4">
-            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
-              <span class="block sm:inline">{{ flash.success }}</span>
-              <button @click="flash.success = null" class="absolute top-0 bottom-0 right-0 px-4 py-3">
-                <svg class="fill-current h-6 w-6 text-green-700" role="button" xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20">
-                  <title>Close</title>
-                  <path
-                    d="M14.348 5.652a1 1 0 00-1.414-1.414L10 7.172 7.066 4.238a1 1 0 10-1.414 1.414L8.586 8.586 5.652 11.52a1 1 0 101.414 1.414L10 10.828l2.934 2.934a1 1 0 001.414-1.414L11.414 8.586l2.934-2.934z" />
-                </svg>
-              </button>
-            </div>
           </div>
           <div class="space-y-3">
             <SearchInput v-model:search="search" />
@@ -265,14 +258,15 @@ const closeDeleteModal = () => {
         </div>
       </div>
     </div>
-    <NotaModal v-if="isNotaModalOpen" :show="isNotaModalOpen" :isEdit="isEditMode" :notaData="selectedNota"
+    <NotaModal
+      :show="isNotaModalOpen" :isEdit="isEditMode" :notaData="selectedNota"
       @close="closeNotaModal"/>
     <SendNotaModal 
       :show="isSendModalOpen" 
       :notaId="selectedNota?.id" 
       :userRole="authUser.role"
       @close="closeSendModal" />
-      <LampiranModal 
+    <LampiranModal 
       :show="isLampiranModalOpen" 
       :notaId="selectedNota?.id" 
       @close="closeLampiranModal" />
@@ -281,9 +275,8 @@ const closeDeleteModal = () => {
       :notaId="selectedNota?.id"
       @close="closeApprovalModal" />
       <ReturnNotaModal
-        v-if="selectedNota"
         :show="isReturnModalOpen" 
-        :notaId="selectedNota.id"
+        :notaId="selectedNota?.id"
         @close="closeReturnModal" 
       />
     <DeleteModal 

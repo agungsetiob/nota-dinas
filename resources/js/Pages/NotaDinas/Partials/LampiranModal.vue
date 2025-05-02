@@ -4,7 +4,7 @@
     <div class="rounded-lg shadow-lg p-6 w-full">
       <div class="flex justify-between items-center border-b pb-3 mb-4">
         <h2 class="text-lg font-semibold text-gray-800">Daftar Lampiran</h2>
-        <button @click="closeModal" class="text-gray-500 hover:text-gray-700 text-xl">&times;</button>
+        <button @click="closeModal">✖</button>
       </div>
 
       <ul class="list-disc pl-5 text-sm text-gray-700">
@@ -29,7 +29,7 @@
     <div class="h-dvh p-6 flex flex-col">
       <div class="flex justify-between items-center mb-4">
         <h3 class="text-lg font-semibold">{{ selectedFile?.name }}</h3>
-        <button @click="closeFilePreview" class="text-gray-400 hover:text-gray-700">✖</button>
+        <button @click="closeFilePreview">✖</button>
       </div>
       <div class="flex-1 overflow-hidden">
         <iframe 

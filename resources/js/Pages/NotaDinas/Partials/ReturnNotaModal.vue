@@ -54,7 +54,8 @@ const props = defineProps({
   },
   notaId: {
     type: [Number, String],
-    required: true
+    default: null,
+    required: false
   }
 });
 
