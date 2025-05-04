@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('nota_dinas_id')->constrained('nota_dinas')->onDelete('cascade');
             $table->enum('dikirim_dari', ['skpd', 'asisten', 'sekda', 'bupati']);
-            $table->enum('dikirim_ke', ['asisten', 'sekda', 'bupati', 'skpd']);
+            $table->enum('dikirim_ke', ['asisten', 'sekda', 'bupati', 'skpd', 'selesai']);
             $table->foreignId('pengirim_id')->constrained('users');
             $table->timestamp('tanggal_kirim')->useCurrent();
             $table->text('catatan')->nullable();

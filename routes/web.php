@@ -27,6 +27,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/nota/lampiran/{id}', [NotaDinasController::class, 'getLampiran']);
     Route::get('api/histori-persetujuan/{id}', [NotaPersetujuanController::class, 'approvalHistories']);
     Route::get('/approval-histories', [NotaPersetujuanController::class, 'index'])->name('approval-histories.index');
+    Route::get('/nota-per-year', [DashboardController::class, 'getNotaPerYear']);
+    Route::get('/approved-nota-dinas', [DashboardController::class, 'getApprovedNotaDinasBySkpd']);
+    Route::get('/nota-dinas-stage', [DashboardController::class, 'getNotaDinasByStage']);
+
 });
 
 Route::middleware(['auth'])->group(function () {

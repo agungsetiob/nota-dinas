@@ -108,6 +108,7 @@ class NotaDinasController extends Controller
                 'perihal' => $validated['perihal'],
                 'anggaran' => $validated['anggaran'],
                 'tanggal_pengajuan' => $validated['tanggal_pengajuan'],
+                'asisten_id' => auth()->user()->skpd->asisten_id ?? null,
             ]);
     
             /* Uncomment and update if handling lampiran files in update
