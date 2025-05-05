@@ -21,7 +21,9 @@ class SkpdSeeder extends Seeder
             ['nama_skpd' => 'RSUD Rumah Sehat Amanah Husada', 'status' => true],
             ['nama_skpd' => 'Dinas Ketahanan Pangan dan Pertanian', 'status' => true],
             ['nama_skpd' => 'Dinas Pendidikan', 'status' => true],
-        ];
+            ['nama_skpd' => 'Dinas Pemberdayaan Masyarakat dan Desa', 'status' => true],
+            ['nama_skpd' => 'Dinas Perpustakaan dan Kearsipan', 'status' => true],
+        ];        
 
         DB::table('skpds')->insert($skpds);
     }

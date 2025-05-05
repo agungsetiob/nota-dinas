@@ -67,7 +67,7 @@
                       label: 'Total Nota Dinas',
                       data: chartData.value.map(item => item.total),
                       backgroundColor: [
-                          '#FF6384', '#36A2EB', '#FFCE56', '#4CAF50', '#9C27B0'
+                        '#FF6384', '#36A2EB', '#FFCE56', '#4CAF50', '#9C27B0'
                       ],
                       hoverOffset: 4
                   }]
@@ -77,7 +77,7 @@
                   maintainAspectRatio: false,
                   plugins: {
                       legend: {
-                          position: 'bottom'
+                        position: 'bottom'
                       }
                   }
               }
@@ -104,21 +104,21 @@
                   maintainAspectRatio: false,
                   plugins: {
                       legend: {
-                          display: false
+                        display: false
                       }
                   },
                   scales: { 
                       y: { 
                           beginAtZero: true,
                           ticks: {
-                              precision: 0
+                            precision: 0
                           }
                       } 
                   }
               }
           });
   
-          // Approved Nota Dinas per SKPD Chart (Bar)
+          // Approved Nota Dinas per SKPD
           const ctx2 = document.getElementById('approvedNotaDinasChart').getContext('2d');
           new Chart(ctx2, {
               type: 'bar',
@@ -141,12 +141,17 @@
                       }
                   },
                   scales: { 
-                      y: { 
-                          beginAtZero: true,
-                          ticks: {
-                              precision: 0
-                          }
-                      } 
+                    y: { 
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0
+                        }
+                    },
+                    x:{
+                        ticks: {
+                            display: false
+                        }
+                    }
                   }
               }
           });

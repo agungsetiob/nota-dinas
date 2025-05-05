@@ -185,34 +185,34 @@ const closeDeleteModal = () => {
                   <template v-if="authUser.role === 'skpd' && (nota.status === 'draft' || nota.status === 'dikembalikan')">
                     <Tooltip text="Edit Nota Dinas" bgColor="bg-blue-500">
                       <button @click="openEditModal(nota)"
-                        class="px-2 py-1 text-xs sm:text-sm font-semibold rounded border transition border-blue-500 text-blue-400 hover:bg-blue-100">
+                        class="px-2 py-1 text-xs sm:text-sm font-semibold rounded transition border-blue-500 text-blue-400 hover:bg-blue-100">
                         <font-awesome-icon icon="edit" />
                       </button>
                     </Tooltip>
                     <Tooltip text="Delete Nota Dinas" bgColor="bg-red-500">
                       <button @click="openDeleteModal(nota)"
-                        class="px-2 py-1 text-xs sm:text-sm font-semibold rounded border transition border-red-500 text-red-500 hover:bg-red-100">
+                        class="px-2 py-1 text-xs sm:text-sm font-semibold rounded transition border-red-500 text-red-500 hover:bg-red-100">
                         <font-awesome-icon icon="trash" />
                       </button>
                     </Tooltip>
                     <Tooltip text="Kirim ke Asisten" bgColor="bg-green-500">
                       <button @click="openSendModal(nota)"
-                        class="px-2 py-1 text-xs sm:text-sm font-semibold rounded border transition border-green-500 text-green-600 hover:bg-green-100">
-                        <font-awesome-icon icon="paper-plane" />
+                        class="px-2 py-1 text-xs sm:text-sm font-semibold rounded transition border-green-500 text-green-600 hover:bg-green-100">
+                        <font-awesome-icon icon="paper-plane"  :transform="{ rotate: 42 }"/>
                       </button>
                     </Tooltip>
                   </template>
                   <template v-if="(authUser.role === 'asisten' && nota.tahap_saat_ini === 'asisten') || (authUser.role === 'sekda' && nota.tahap_saat_ini === 'sekda')">
                     <Tooltip text="Kirim Nota Dinas" bgColor="bg-green-500">
                       <button @click="openSendModal(nota)"
-                        class="px-2 py-1 text-xs sm:text-sm font-semibold rounded border transition border-green-500 text-green-600 hover:bg-green-100">
-                        <font-awesome-icon icon="paper-plane" />
+                        class="px-2 py-1 text-xs sm:text-sm font-semibold rounded transition border-green-500 text-green-600 hover:bg-green-100">
+                        <font-awesome-icon icon="paper-plane" :transform="{ rotate: 42 }"/>
                       </button>
                     </Tooltip>
                     <Tooltip text="Pengembalian Nota Dinas" bgColor="bg-red-500">
                       <button 
                         @click="openReturnModal(nota)"
-                        class="px-2 py-1 text-xs sm:text-sm font-semibold rounded border transition border-red-500 text-red-600 hover:bg-red-100"
+                        class="px-2 py-1 text-xs sm:text-sm font-semibold rounded transition border-red-500 text-red-600 hover:bg-red-100"
                       >
                         <font-awesome-icon icon="undo" />
                       </button>
@@ -221,13 +221,13 @@ const closeDeleteModal = () => {
                   <template v-else-if="authUser.role === 'bupati' && nota.tahap_saat_ini === 'bupati'">
                     <Tooltip text="Pengembalian Nota Dinas" bgColor="bg-red-500">
                       <button @click="openReturnModal(nota)"
-                        class="px-2 py-1 text-xs sm:text-sm font-semibold rounded border transition border-red-500 text-red-600 hover:bg-red-100">
+                        class="px-2 py-1 text-xs sm:text-sm font-semibold rounded transition border-red-500 text-red-600 hover:bg-red-100">
                         <font-awesome-icon icon="undo" />
                       </button>
                     </Tooltip>
                     <Tooltip text="Setujui atau Tolak" bgColor="bg-violet-500">
                       <button @click="openApprovalModal(nota)"
-                        class="px-3 py-1 text-sm font-semibold rounded border transition border-blue-500 text-gray-600 hover:bg-blue-200">
+                        class="px-3 py-1 text-sm font-semibold rounded transition border-blue-500 text-gray-600 hover:bg-blue-200">
                         <font-awesome-icon icon="check" class="text-green-500" /> or <font-awesome-icon icon="x"
                           class="text-red-500" />
                       </button>
@@ -235,14 +235,14 @@ const closeDeleteModal = () => {
                   </template>
                   <Tooltip text="List Lampiran" bgColor="bg-gray-500">
                     <button @click="openLampiranModal(nota)"
-                      class="px-2 py-1 text-xs sm:text-sm font-semibold rounded border transition border-gray-500 text-gray-600 hover:bg-gray-200">
+                      class="px-2 py-1 text-xs sm:text-sm font-semibold rounded transition border-gray-500 text-gray-600 hover:bg-gray-200">
                       <font-awesome-icon icon="paperclip" />
                     </button>
                   </Tooltip>
                   <Tooltip text="Riwayat Pengiriman" bgColor="bg-yellow-500">
                     <Link
                       :href="route('nota.pengiriman.history', nota.id)"
-                      class="px-2 py-1 text-xs sm:text-sm font-semibold rounded border transition border-yellow-500 text-yellow-400 hover:bg-yellow-100"
+                      class="px-2 py-1 text-xs sm:text-sm font-semibold rounded transition border-yellow-500 text-yellow-400 hover:bg-yellow-100"
                     >
                       <font-awesome-icon icon="clock-rotate-left" />
                     </Link>

@@ -1,6 +1,7 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, usePage } from '@inertiajs/vue3';
+import Charts from './Charts/Charts.vue';
 
 const props = defineProps({
     totalUsers: Number,
@@ -14,14 +15,11 @@ const user = page.props.auth.user;
 </script>
 
 <template>
-    <Head title="Dashboard SKPD" />
+    <Head title="Dashboard Admin" />
 
     <AuthenticatedLayout>
-        <template #header></template>
-
         <div class="pt-6 sm:pt-20 mx-2 sm:px-2">
             <div class="max-w-8xl mx-auto sm:px-6 lg:px-6">
-
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-2">
                     <!-- Jumlah User -->
                     <div class="bg-gray-100 rounded-lg p-6 flex flex-col items-center shadow-md">
@@ -50,6 +48,9 @@ const user = page.props.auth.user;
                         <p class="text-lg font-medium mt-2">Selesai</p>
                         <p class="text-2xl font-bold">{{ notaSelesai }}</p>
                     </div>
+                </div>
+                <div class="pt-6">
+                    <Charts/>
                 </div>
             </div>
         </div>

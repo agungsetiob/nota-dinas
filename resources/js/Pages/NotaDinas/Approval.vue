@@ -38,7 +38,8 @@
                             :class="{
                               'bg-blue-500 text-white': nota.status === 'proses',
                               'bg-green-500 text-white': nota.status === 'disetujui',
-                              'bg-red-500 text-white': nota.status === 'ditolak'
+                              'bg-red-500 text-white': nota.status === 'ditolak',
+                              'bg-yellow-500 text-white': nota.status === 'dikembalikan'
                             }">
                         {{ capitalizeFirstLetter(nota.status) }}
                       </span>
@@ -48,22 +49,22 @@
                     <Tooltip text="Riwayat Pengiriman" bgColor="bg-green-500">
                       <Link
                         :href="route('nota.pengiriman.history', nota.id)"
-                        class="px-2 py-1 text-xs sm:text-sm font-semibold rounded border transition border-red-500 text-green-400 hover:bg-red-100"
+                        class="px-2 py-1 text-xs sm:text-sm font-semibold rounded transition text-green-400 hover:bg-red-100"
                       >
-                        <font-awesome-icon icon="paper-plane" />
+                        <font-awesome-icon icon="paper-plane"  :transform="{ rotate: 42 }"/>
                       </Link>
                     </Tooltip>
                     <Tooltip text="Riwayat Persetujuan" bgColor="bg-red-500">
                       <button
                         @click="openHistoriModal(nota.id)"
-                        class="px-2 py-1 text-sm font-semibold rounded border border-green-500 text-red-400 hover:bg-green-100"
+                        class="px-2 py-1 text-sm font-semibold rounded text-red-400 hover:bg-green-100"
                       >
                         <font-awesome-icon icon="check" />
                       </button>
                     </Tooltip>
                     <Tooltip text="List Lampiran" bgColor="bg-gray-500">
                       <button @click="openLampiranModal(nota)"
-                        class="px-2 py-1 text-xs sm:text-sm font-semibold rounded border transition border-gray-500 text-gray-600 hover:bg-gray-200">
+                        class="px-2 py-1 text-xs sm:text-sm font-semibold rounded transition text-gray-600 hover:bg-gray-200">
                         <font-awesome-icon icon="paperclip" />
                       </button>
                     </Tooltip>
@@ -77,7 +78,7 @@
             </div>
 
             <div class="mt-4">
-              <Pagination :links="notas.links" />
+              <Pagination :links="notas.links" :meta="{ from: notas.from, to: notas.to, total: notas.total }"/>
             </div>
           </div>
         </div>

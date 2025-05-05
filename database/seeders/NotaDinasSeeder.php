@@ -11,10 +11,10 @@ class NotaDinasSeeder extends Seeder
 {
     public function run()
     {
-        $faker = Faker::create();
+        $faker = Faker::create('id_ID');
         $years = collect(range(Carbon::now()->subYears(4)->year, Carbon::now()->year))->shuffle();
         
-        for ($i = 0; $i < 30; $i++) {
+        for ($i = 0; $i < 50; $i++) {
             DB::table('nota_dinas')->insert([
                 'skpd_id' => $faker->numberBetween(1, 5),
                 'nomor_nota' => $faker->unique()->numerify('ND-#####'),
