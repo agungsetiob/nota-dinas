@@ -35,10 +35,12 @@ const submitForm = () => {
   if (isEdit.value && props.skpd?.id) {
     form.put(route('skpds.update', props.skpd.id), {
       onSuccess: () => emit('close'),
+      preserveScroll: true,
     })
   } else {
     form.post(route('skpds.store'), {
       onSuccess: () => emit('close'),
+      preserveScroll: true,
     })
   }
 }

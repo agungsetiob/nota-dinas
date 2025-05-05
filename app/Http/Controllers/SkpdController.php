@@ -47,7 +47,7 @@ class SkpdController extends Controller
             'asisten_id' => $validated['asisten_id'] ?? null,
         ]);
 
-        return redirect()->route('skpds.index')->with('success', 'SKPD berhasil ditambahkan.');
+        return back()->with('success', 'SKPD berhasil ditambahkan.');
     }
 
     /**
@@ -65,7 +65,7 @@ class SkpdController extends Controller
             'asisten_id' => $validated['asisten_id'] ?? null,
         ]);
 
-        return redirect()->route('skpds.index')->with('success', 'SKPD berhasil diupdate.');
+        return back()->with('success', 'SKPD berhasil diupdate.');
     }
 
     /**
