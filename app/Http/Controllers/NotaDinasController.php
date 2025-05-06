@@ -188,7 +188,7 @@ class NotaDinasController extends Controller
             return redirect()->route('nota-dinas.index')
                              ->with('error', 'Hanya Bupati yang dapat menyetujui atau menolak Nota Dinas.');
         }
-
+        //sleep(5);
         $notaDinas = NotaDinas::findOrFail($notaId);
         $status = $request->status === 'disetujui' ? 'disetujui' : 'ditolak';
 
